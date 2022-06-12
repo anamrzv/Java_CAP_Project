@@ -1,0 +1,15 @@
+---
+spring:
+  web.resources.static-locations: "file:./app"
+  config.activate.on-profile: default
+cds:
+  datasource:
+    auto-config.enabled: false
+  odata-v4.endpoint.path: "/api"
+  security.mock.users:
+    - name: ana
+      password: 123
+      roles:
+      - admin
+    - name: user
+      password: user
