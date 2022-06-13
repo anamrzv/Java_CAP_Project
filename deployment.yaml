@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javacapapp
+spec:
+  selector:
+    matchLabels:
+      templatename: anatemplate
+  template:
+    metadata:
+      labels:
+        templatename: anatemplate
+    spec:
+      containers:
+        - image: anamrzv/java_cap_image
+          name: anaapp
