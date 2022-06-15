@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>java_cap-parent</artifactId>
+		<artifactId>java_cap_parent</artifactId>
 		<groupId>customer</groupId>
 		<version>${revision}</version>
 	</parent>
@@ -28,6 +28,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
@@ -38,6 +43,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.sap.cds</groupId>
 			<artifactId>cds-starter-cloudfoundry</artifactId>
@@ -111,7 +117,7 @@
 						<configuration>
 							<commands>
 								<command>build --for java-cf</command>
-								<command>deploy --to sql --dry &gt;
+								<command>deploy --to sql --with-mocks --dry &gt;
 									"${project.basedir}/src/main/resources/schema.sql"</command>
 							</commands>
 						</configuration>
