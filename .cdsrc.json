@@ -1,20 +1,67 @@
 {
     "build": {
-        "target": "."
-    },
-    "requires": {
-        "db": {
-            "kind": "sqlite",
-            "model": [
-                "db",
-                "srv"
-            ],
-            "credentials": {
-                "database": "sqlite.db"
+        "target": ".",
+        "tasks": [
+            {
+                "src": "db",
+                "for": "hana",
+                "options": {
+                    "model": [
+                        "db",
+                        "srv"
+                    ]
+                }
+            },
+            {
+                "src": "srv",
+                "for": "java-cf",
+                "options": {
+                    "model": [
+                        "db",
+                        "srv",
+                        "app"
+                    ]
+                }
+            },
+            {
+                "src": "app",
+                "for": "fiori",
+                "options": {
+                    "model": [
+                        "app"
+                    ]
+                }
             }
-        }
+        ]
     },
     "odata": {
         "version": "v4"
+    },
+    "auth": {
+        "passport": {
+            "strategy": "mock",
+            "users": {
+                "ana": {
+                    "password": "123",
+                    "ID": "ana",
+                    "roles": [
+                        "owner_role",
+                        "authenticated-user"
+                    ],
+                    "xs.user.attributes": {
+                        "currency": [
+                            "EUR"
+                        ]
+                    }
+                },
+                "user": {
+                    "password": "123",
+                    "ID": "user",
+                    "roles": [
+                        "authenticated-user"
+                    ]
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,13 @@
+{
+    "name": "browse",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+      "build": "npm run clean && npm run zip",
+      "zip": "npx bestzip browse.zip *",
+      "clean": "npx rimraf browse.zip dist"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

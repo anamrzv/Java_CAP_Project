@@ -48,7 +48,21 @@
 			<groupId>com.sap.cds</groupId>
 			<artifactId>cds-starter-cloudfoundry</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+			<artifactId>scp-cf</artifactId>
+			<version>3.67.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+			<artifactId>resilience</artifactId>
+			<version>3.67.0</version>
+		</dependency>
 	</dependencies>
+
+
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -119,6 +133,8 @@
 								<command>build --for java-cf</command>
 								<command>deploy --to sql --with-mocks --dry &gt;
 									"${project.basedir}/src/main/resources/schema.sql"</command>
+								<command>deploy --to sql --dry >
+									${project.basedir}/src/main/resources/schema-nomocks.sql</command>
 							</commands>
 						</configuration>
 					</execution>

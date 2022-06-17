@@ -1,0 +1,13 @@
+{
+    "welcomeFile": "/browse/fiori.html",
+    "authenticationMethod": "none",
+    "routes": [
+        {
+            "source": "^/browse/(.*)$",
+            "destination": "srv-api",
+            "authenticationType": "none",
+            "csrfProtection": false,
+            "cacheControl": "no-cache, no-store, must-revalidate"
+        }
+    ]
+}

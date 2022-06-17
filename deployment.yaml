@@ -1,16 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: javacapapp
+  name: java-cap-app
 spec:
   selector:
     matchLabels:
-      templatename: anatemplate
+      templatename: ana-template
   template:
     metadata:
       labels:
-        templatename: anatemplate
+        templatename: ana-template
     spec:
       containers:
-        - image: anamrzv/java_cap_image
-          name: anaapp
+        - image: anamrzv/java_hana:latest
+          name: ana-java-cap-hana-container
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
