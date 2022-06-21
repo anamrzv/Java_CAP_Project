@@ -13,13 +13,21 @@
                     "odataVersion": "4.0"
                 }
             }
+        },
+        "applicationVersion": {
+            "version": "1.0.0"
         }
     },
     "sap.ui5": {
         "dependencies": {
+            "minUI5Version": "1.36.0",
             "libs": {
                 "sap.fe.templates": {}
             }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
         },
         "models": {
             "": {
@@ -63,8 +71,12 @@
         "technology": "UI5",
         "fullWidth": false
     },
-	"sap.fiori": {
-		"registrationIds": [],
-		"archeType": "transactional"
-	}
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "ana.bookshop.cloud.app"
+    }
 }

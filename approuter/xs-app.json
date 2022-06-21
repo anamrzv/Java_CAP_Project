@@ -1,10 +1,17 @@
 {
-    "welcomeFile": "/browse/fiori.html",
+    "welcomeFile": "fiori.html",
     "authenticationMethod": "none",
     "routes": [
         {
-            "source": "^/browse/(.*)$",
-            "destination": "srv-api",
+            "source": "^/api/browse/(.*)$",
+            "destination": "bookshop-srv-dest",
+            "authenticationType": "none",
+            "csrfProtection": false,
+            "cacheControl": "no-cache, no-store, must-revalidate"
+        },
+        {
+            "source": "^(.*)$",
+            "service": "bookshop-html-repo-rt",
             "authenticationType": "none",
             "csrfProtection": false,
             "cacheControl": "no-cache, no-store, must-revalidate"

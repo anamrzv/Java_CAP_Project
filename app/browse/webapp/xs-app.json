@@ -1,0 +1,16 @@
+{
+    "routes": [
+     {
+        "source": "^/api/browse/(.*)$",
+        "destination": "bookshop-srv-dest",
+        "csrfProtection": false,
+        "authenticationType": "none"
+      },
+      {
+        "source": "^(.*)",
+        "target": "$1",
+        "service": "bookshop-html-repo-rt",
+        "authenticationType": "none"
+      }
+    ]
+ }

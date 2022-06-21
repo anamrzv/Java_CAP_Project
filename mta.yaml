@@ -28,7 +28,7 @@ modules:
         - mvn clean package -DskipTests=true
       build-result: target/*-exec.jar
     requires:
-      - name: bookshop-db
+      - name: ana-bookshop-db
       - name: bookshop-uaa
       - name: bookshop-destination-srv
       - name: cf-logging
@@ -43,28 +43,63 @@ modules:
     type: hdb
     path: db  
     parameters:
-      buildpack: sap_java_buildpack
+      buildpack: nodejs_buildpack
     requires:
-      - name: bookshop-db 
+      - name: ana-bookshop-db 
 
-  # -------------------- APPROUTER MODULE ------------------------
+  # -------------------- STANDALONE APPROUTER MODULE ------------------------
   - name: approuter
   # ------------------------------------------------------------
     type: approuter.nodejs
     path: approuter 
+    build-parameters:
+      ignore: ["node_modules/", "package-lock.json"]
     parameters:
-      buildpack: sap_java_buildpack
+      buildpack: nodejs_buildpack
       disk-quota: 1024M
       memory: 1024M
     requires:
       - name: bookshop-uaa
       - name: bookshop-html-repo-rt
+      - name: bookshop-destination-srv
       - name: srv-api
         group: destinations
         properties: 
           name: srv-api
           url: '~{srv-url}'
           forwardAuthToken: true
+
+  # --------------------MANAGED APPROUTER-------
+  - name: bookshop-managed-approuter
+    type: com.sap.application.content
+    requires: 
+      - name: bookshop-destination-srv
+        parameters: 
+          content-target: true
+      - name: bookshop-html-repo-h
+        parameters:
+          service-key:
+            name: bookshop-html-repo-h-key
+      - name: bookshop-uaa
+        parameters:
+          service-key:
+            name: bookshop-uaa-key
+    parameters:
+      content:
+        subaccount:
+          destinations:
+            - Name: bookshop-destination-html5
+              ServiceInstanceName: bookshop-html-repo-h     
+              ServiceKeyName:  bookshop-html-repo-h-key
+              sap.cloud.service: ana.bookshop.cloud.app
+            - Authentication: OAuth2UserTokenExchange
+              Name: bookshop-destination-uaa
+              ServiceInstanceName: bookshop-uaa
+              ServiceKeyName: bookshop-uaa-key
+              sap.cloud.service: ana.bookshop.cloud.app
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
 
   - name: browse-deployer
     type: com.sap.application.content
@@ -94,15 +129,13 @@ modules:
 # --------------------- RESOURCES ---------------------
 resources:
 # -----------------------------------------------------
-  - name: bookshop-db
+  - name: ana-bookshop-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-      memory: 256M
-      disk-quota: 512M
     properties:
-     hdi-service-name: ${service-name}
+      hdi-service-name: ${service-name}
 
   - name: bookshop-uaa
     type: org.cloudfoundry.managed-service
@@ -118,9 +151,25 @@ resources:
   - name: bookshop-destination-srv
 # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
+    requires:
+      - name: srv-api
     parameters:
       service: destination
       service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          subaccount:
+            existing_destinations_policy: update 
+            destinations:
+              - Name: bookshop-srv-dest
+                Description: Server Module
+                URL: ~{srv-api/srv-url}
+                Type: HTTP
+                ProxyType: Internet
+                Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
 
   - name: cf-logging
     type: org.cloudfoundry.managed-service
